@@ -20,8 +20,11 @@ public class gui_matrices extends javax.swing.JFrame implements Serializable{
         matrix_1 = new javax.swing.JTextArea();
         matrix_2 = new javax.swing.JTextArea();
 
+        java.awt.Font fontStyle = new java.awt.Font("Monospaced", 0, 24);
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(null);
+        setResizable(false);
 
         getContentPane().add(btnADD);
         btnADD.setBounds(130, 230, 50, 50);
@@ -47,20 +50,34 @@ public class gui_matrices extends javax.swing.JFrame implements Serializable{
         btnMUL.setBounds(250, 230, 50, 50);
         btnMUL.setText("*");
 
+        btnMUL.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMulActionPerformed(evt);
+            }
+        });
+
         getContentPane().add(btnDIV);
         btnDIV.setBounds(310, 230, 50, 50);
         btnDIV.setText("/");
 
+        btnDIV.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDivActionPerformed(evt);
+            }
+        });
 
         getContentPane().add(matrix_solve);
         matrix_solve.setBounds(540, 20, 210, 200);
         matrix_solve.setEditable(false);
-        
+        matrix_solve.setFont(fontStyle);
+
         getContentPane().add(matrix_1);
         matrix_1.setBounds(20, 20, 210, 200);
+        matrix_1.setFont(fontStyle);
         
         getContentPane().add(matrix_2);
         matrix_2.setBounds(260, 20, 210, 200);
+        matrix_2.setFont(fontStyle);
 
         setBounds(0, 0, 782, 330);
     }
@@ -70,7 +87,7 @@ public class gui_matrices extends javax.swing.JFrame implements Serializable{
         int[][] mat1 = toArray(matrix_1);
         int[][] mat2 = toArray(matrix_2);
 
-        if (operations.valid(mat1, mat2)){
+        if (operations.isAddSubValid(mat1, mat2)){
         
             int[][] solve = operations.add(mat1, mat2);
 
@@ -87,9 +104,9 @@ public class gui_matrices extends javax.swing.JFrame implements Serializable{
         int[][] mat1 = toArray(matrix_1);
         int[][] mat2 = toArray(matrix_2);
 
-        if (operations.valid(mat1, mat2)){
+        if (operations.isAddSubValid(mat1, mat2)){
         
-            int[][] solve = operations.sub(mat1, mat2);
+            int[][] solve = operations.subtract(mat1, mat2);
 
             matrix_solve.setText(toString(solve));
             matrix_1.setText("");
@@ -98,11 +115,44 @@ public class gui_matrices extends javax.swing.JFrame implements Serializable{
         } else matrix_solve.setText("Error!");
     }
 
-    private static ArrayList<ArrayList<Integer>> intSplit(javax.swing.JTextArea txtarea) {
+    private void btnMulActionPerformed(java.awt.event.ActionEvent evt) {
+
+        int[][] mat1 = toArray(matrix_1);
+        int[][] mat2 = toArray(matrix_2);
+
+        if (operations.isMulDivValid(mat1, mat2)){
+        
+            int[][] solve = operations.multiply(mat1, mat2);
+
+            matrix_solve.setText(toString(solve));
+            matrix_1.setText("");
+            matrix_2.setText("");
+
+        } else matrix_solve.setText("Error!");
+    }
+
+    private void btnDivActionPerformed(java.awt.event.ActionEvent evt) {
+
+        int[][] mat1 = toArray(matrix_1);
+        int[][] mat2 = toArray(matrix_2);
+
+        if (operations.isMulDivValid(mat1, mat2)){
+        
+            int[][] solve = operations.division(mat1, mat2);
+
+            matrix_solve.setText(toString(solve));
+            matrix_1.setText("");
+            matrix_2.setText("");
+
+        } else matrix_solve.setText("Error!");
+    }
+
+    private static ArrayList<ArrayList<Integer>> intSplit(javax.swing.JTextArea textarea) {
         
         ArrayList<ArrayList<Integer>> arr = new ArrayList<>();
         arr.add(new ArrayList<>());
-        String text = txtarea.getText() + "\n", temp = "";
+        String text = textarea.getText() + "\n";
+        String temp = "";
 
         for (int index = 0, row = 0 ; index < text.length() - 1; index++) {
 
@@ -119,10 +169,9 @@ public class gui_matrices extends javax.swing.JFrame implements Serializable{
             
             // Create a new row
             if (text.charAt(index) == '\n' && text.charAt(index + 1) != '\n' && temp.length() != 0) {
-                arr.get(row).add(Integer.parseInt(temp));
+                arr.get(row++).add(Integer.parseInt(temp));
                 arr.add(new ArrayList<>());
                 temp = "";
-                ++row;
             }
 
         }
@@ -132,9 +181,9 @@ public class gui_matrices extends javax.swing.JFrame implements Serializable{
         return arr;
     }
 
-    private static int[][] toArray(javax.swing.JTextArea txtarea) {
+    private static int[][] toArray(javax.swing.JTextArea textarea) {
 
-        ArrayList<ArrayList<Integer>> arr = intSplit(txtarea);
+        ArrayList<ArrayList<Integer>> arr = intSplit(textarea);
 
         int[][] solve = new int[arr.size()][arr.get(0).size()];
 
