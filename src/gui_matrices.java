@@ -32,7 +32,7 @@ public class gui_matrices extends javax.swing.JFrame implements Serializable{
 
         btnADD.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAddActionPreformed(evt);
+                btnPerformed(evt);
             }
         });
 
@@ -42,7 +42,7 @@ public class gui_matrices extends javax.swing.JFrame implements Serializable{
 
         btnSUB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSubActionPerformed(evt);
+                btnPerformed(evt);
             }
         });
 
@@ -52,7 +52,7 @@ public class gui_matrices extends javax.swing.JFrame implements Serializable{
 
         btnMUL.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnMulActionPerformed(evt);
+                btnPerformed(evt);
             }
         });
 
@@ -62,7 +62,7 @@ public class gui_matrices extends javax.swing.JFrame implements Serializable{
 
         btnDIV.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDivActionPerformed(evt);
+                btnPerformed(evt);
             }
         });
 
@@ -82,69 +82,36 @@ public class gui_matrices extends javax.swing.JFrame implements Serializable{
         setBounds(0, 0, 782, 330);
     }
 
-    private void btnAddActionPreformed(java.awt.event.ActionEvent evt) {
-
+    private void btnPerformed(java.awt.event.ActionEvent evt) {
         int[][] mat1 = toArray(matrix_1);
         int[][] mat2 = toArray(matrix_2);
 
-        if (operations.isAddSubValid(mat1, mat2)){
-        
-            int[][] solve = operations.add(mat1, mat2);
+        int[][] solve = new int[0][0];
+        boolean valid = true;
 
-            matrix_solve.setText(toString(solve));
-            matrix_1.setText("");
-            matrix_2.setText("");
+        switch(evt.getActionCommand()) {
+            case "+":
+                valid = operations.is_add_sub_valid(mat1, mat2);
+                if (valid) solve = operations.add(mat1, mat2);
+                break;
+            case "-":
+                valid = operations.is_add_sub_valid(mat1, mat2);
+                if (valid) solve = operations.subtract(mat1, mat2);
+                break;
+            case "*":
+                valid = operations.is_mul_div_valid(mat1, mat2);
+                if (valid) solve = operations.subtract(mat1, mat2);
+                break;
+            case "/":
+                valid = operations.is_mul_div_valid(mat1, mat2);
+                // if (valid) solve = operations.subtract(mat1, mat2);
+                break;
+        }
+            
+        matrix_solve.setText((valid) ? toString(solve) : "Error!");
+        matrix_1.setText("");
+        matrix_2.setText("");
 
-        } else matrix_solve.setText("Error!");
-
-    }
-
-    private void btnSubActionPerformed(java.awt.event.ActionEvent evt) {
-        
-        int[][] mat1 = toArray(matrix_1);
-        int[][] mat2 = toArray(matrix_2);
-
-        if (operations.isAddSubValid(mat1, mat2)){
-        
-            int[][] solve = operations.subtract(mat1, mat2);
-
-            matrix_solve.setText(toString(solve));
-            matrix_1.setText("");
-            matrix_2.setText("");
-
-        } else matrix_solve.setText("Error!");
-    }
-
-    private void btnMulActionPerformed(java.awt.event.ActionEvent evt) {
-
-        int[][] mat1 = toArray(matrix_1);
-        int[][] mat2 = toArray(matrix_2);
-
-        if (operations.isMulDivValid(mat1, mat2)){
-        
-            int[][] solve = operations.multiply(mat1, mat2);
-
-            matrix_solve.setText(toString(solve));
-            matrix_1.setText("");
-            matrix_2.setText("");
-
-        } else matrix_solve.setText("Error!");
-    }
-
-    private void btnDivActionPerformed(java.awt.event.ActionEvent evt) {
-
-        int[][] mat1 = toArray(matrix_1);
-        int[][] mat2 = toArray(matrix_2);
-
-        if (operations.isMulDivValid(mat1, mat2)){
-        
-            int[][] solve = operations.division(mat1, mat2);
-
-            matrix_solve.setText(toString(solve));
-            matrix_1.setText("");
-            matrix_2.setText("");
-
-        } else matrix_solve.setText("Error!");
     }
 
     private static ArrayList<ArrayList<Integer>> intSplit(javax.swing.JTextArea textarea) {
@@ -238,6 +205,7 @@ public class gui_matrices extends javax.swing.JFrame implements Serializable{
         }
 
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new gui_matrices().setVisible(true);
             }
