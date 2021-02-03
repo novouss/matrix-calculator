@@ -194,7 +194,7 @@ public class gui_matrices extends javax.swing.JFrame implements Serializable{
         int[][] matrix = toArray(deter_input);
 
         if (matrix.length > 1 && matrix[0].length > 1 && operations.isDeterminant(matrix)) {
-            deter_solve.setText(operations.determinant(matrix) + "");
+            deter_solve.setText(operations.getDeterminant(matrix) + "");
         } else {
             deter_solve.setText("Error!");
         }
@@ -296,7 +296,9 @@ public class gui_matrices extends javax.swing.JFrame implements Serializable{
     private javax.swing.JTabbedPane tabbed_pane;
     private String font_face = "Monospaced";
     private java.awt.Font fontStyle = new java.awt.Font(font_face, 0, 12);
+    public static matrices operations = new matrices();
     
+    // BASIC OPERATION VARIABLE DECLARATION
     private javax.swing.JButton btnADD;
     private javax.swing.JButton btnSUB;
     private javax.swing.JButton btnMUL;
@@ -313,6 +315,7 @@ public class gui_matrices extends javax.swing.JFrame implements Serializable{
     private javax.swing.JPanel basic_op_panel;
     private java.awt.Label basic_op_text;
 
+    // DETERMINANT VARIABLE DECLARATION
     private javax.swing.JTextArea deter_solve;
     private javax.swing.JTextArea deter_input;
 
@@ -322,6 +325,5 @@ public class gui_matrices extends javax.swing.JFrame implements Serializable{
     private javax.swing.JPanel deter_panel;
     private java.awt.Label deter_text;
 
-    public static matrices operations = new matrices();
     // End of variable declaration
 }

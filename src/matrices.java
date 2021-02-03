@@ -1,6 +1,5 @@
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 class matrices implements Serializable{
     
@@ -69,7 +68,7 @@ class matrices implements Serializable{
         return toArray(solve);
     }
 
-    public int determinant(int[][] mat) {
+    public int getDeterminant(int[][] mat) {
         // Laplace Expansion. Read more here https://en.wikipedia.org/wiki/Laplace_expansion
         if (mat.length == 2) {
             // Given mat = [a, b], [c,d]
@@ -79,31 +78,80 @@ class matrices implements Serializable{
             // Recursive Method
             int total = 0;
 
-            int[][] matrix = new int[mat.length - 1][mat[0].length - 1];
-
             for (int n = 0; n < mat.length; n++) {
                 
                 // Get the array excluding the first row and current column (n)
-                // REALLY HIGH TIME-COMPLEXITY. WORK IN PROGRESS...
-                for (int row = 1; row < mat.length; row++) {
-                    for (int col = 0, count = 0; col < mat[row].length; col++) {
-                        if (col != n) {
-                            matrix[row - 1][count++] = mat[row][col];
-                        }
-                    }
-                }
-
+                int[][] matrix = arrayOfRange(mat, 0, n);
 
                 if (n % 2 == 0) {
-                    total += mat[0][n] * determinant(matrix);
+                    total += mat[0][n] * getDeterminant(matrix);
                 } else {
-                    total -= mat[0][n] * determinant(matrix);
+                    total -= mat[0][n] * getDeterminant(matrix);
                 }
                 
             }
 
             return total;
         }
+    }
+
+    public int[][] getCofactor(int[][] mat) {
+        int cofactor = -1; // -1 * -1 = positive, a cofactor alternates between positives and negatives.
+
+        for (int row = 0; row < mat.length; row++) {
+
+            for (int col = 0; col < mat[0].length; col++) {
+                cofactor = cofactor * -1;
+                mat[row][col] = mat[row][col] * cofactor; 
+            }
+
+        }
+        return mat;
+    }
+
+    public int[][] getDeterminantOfMinors(int[][] mat) {
+        // Matrix of Minors. Read more here https://en.wikipedia.org/wiki/Minor_(linear_algebra)
+        int[][] matrix;
+        int[][] solve = new int[mat.length][mat[0].length];
+
+        for (int n = 0; n < mat.length; n++) {
+
+            for (int m = 0; m < mat[0].length; m++) {
+                matrix = arrayOfRange(mat, n, m);
+                solve[n][m] = getDeterminant(matrix);
+            }            
+        }
+
+        return solve;
+    }
+
+    private int[][] arrayOfRange(int[][] mat, int n, int m) {
+
+        int[][] matrix = new int[mat.length - 1][mat[0].length - 1];
+        int row_sub = 0;
+
+        for (int row = 0; row < mat.length; row++) {
+
+            int col_sub = 0;
+            if (row != n) {
+
+                for (int col = 0; col < mat[row].length; col++) {
+
+                    if (col != m) {
+                        matrix[row - row_sub][col - col_sub] = mat[row][col];
+                    } else {
+                        col_sub = 1;
+                    }
+
+                }
+
+            } else {
+                row_sub = 1;
+            }
+
+        }
+
+        return matrix;
     }
 
     public Boolean isAddSubValid(int[][] mat1, int[][] mat2) {
@@ -120,7 +168,7 @@ class matrices implements Serializable{
     
     public boolean isInverse(int[][] mat) {
         // If the determinant is zero, the matrix does not have an inverse.
-        return determinant(mat) == 0;
+        return getDeterminant(mat) == 0;
     }
 
     public boolean isDeterminant(int[][] mat) {
@@ -154,12 +202,15 @@ class matrices implements Serializable{
 
     public void print(int[][] mat) {
 
-        for (int row = 0; row < mat.length; row++) {
-            for (int col = 0; col < mat[row].length; col++) {
-                System.out.print(mat[row][col] + " ");
+        for (int[] row: mat) {
+            
+            for (int col: row) {
+                System.out.print(col + " ");
             }
+
             System.out.println();
         }
+
     }
 
 }
