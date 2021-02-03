@@ -64,6 +64,8 @@ class matrices implements Serializable{
 
         ArrayList<ArrayList<Integer>> solve = new ArrayList<>();
 
+        // IS CURRENTLY UNAVAILABLE FOR THE TIME BEING.
+
         return toArray(solve);
     }
 
@@ -78,21 +80,25 @@ class matrices implements Serializable{
             int total = 0;
 
             int[][] matrix = new int[mat.length - 1][mat[0].length - 1];
-            
+
             for (int n = 0; n < mat.length; n++) {
                 
-                // Get the array excluding the first row and current column
-                // Row is constant, while column traverses
+                // Get the array excluding the first row and current column (n)
+                // REALLY HIGH TIME-COMPLEXITY. WORK IN PROGRESS...
                 for (int row = 1; row < mat.length; row++) {
-                    matrix[row] = Arrays.copyOfRange(mat[row], 1, mat[row].length);
+                    for (int col = 0, count = 0; col < mat[row].length; col++) {
+                        if (col != n) {
+                            matrix[row - 1][count++] = mat[row][col];
+                        }
+                    }
                 }
+
 
                 if (n % 2 == 0) {
                     total += mat[0][n] * determinant(matrix);
                 } else {
                     total -= mat[0][n] * determinant(matrix);
                 }
-
                 
             }
 
@@ -100,21 +106,30 @@ class matrices implements Serializable{
         }
     }
 
-    public Boolean is_add_sub_valid(int[][] mat1, int[][] mat2) {
+    public Boolean isAddSubValid(int[][] mat1, int[][] mat2) {
         // Rows and Columns of the first matrix must be equal to the second matrix's rows and columns.
         // row_of_mat1 == row_of_mat2 and col_of_mat1 == col_of_mat2;
         return mat1.length == mat2.length && mat1[0].length == mat2[0].length;
     }
 
-    public Boolean is_mul_div_valid(int[][] mat1, int[][] mat2) {
+    public Boolean isMulDivValid(int[][] mat1, int[][] mat2) {
         // The number of columns of the first matrix must equal the number of rows of the second matrix.
         // col_of_mat1 == row_of_mat2
         return mat1[0].length == mat2.length;
     }
     
-    public boolean is_inverse(int[][] mat) {
+    public boolean isInverse(int[][] mat) {
         // If the determinant is zero, the matrix does not have an inverse.
-        return determinant(mat) > 0;
+        return determinant(mat) == 0;
+    }
+
+    public boolean isDeterminant(int[][] mat) {
+        // Matrix must be a square, meaning the rows and columns should be the same.
+        try {
+            return mat.length == mat[0].length;
+        } catch (IndexOutOfBoundsException e) {
+            return false;
+        }
     }
 
     private int[][] toArray(ArrayList<ArrayList<Integer>> arr) {
@@ -146,5 +161,5 @@ class matrices implements Serializable{
             System.out.println();
         }
     }
-    
+
 }

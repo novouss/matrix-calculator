@@ -1,4 +1,5 @@
 
+import java.awt.event.KeyEvent;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -11,6 +12,25 @@ public class gui_matrices extends javax.swing.JFrame implements Serializable{
     }
 
     private void initComponents() {
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(null);
+        setResizable(false);
+
+        tabbed_pane = new javax.swing.JTabbedPane();
+
+        basicOperations();
+        determinants();
+
+        tabbed_pane.addTab("BASIC OPERATIONS", basic_op_panel);
+        tabbed_pane.addTab("DETERMINANTS", deter_panel);
+        getContentPane().add(tabbed_pane);
+        tabbed_pane.setBounds(0, 0, 760, 400);
+
+        setBounds(0, 0, 760, 400);
+    }
+
+    private void basicOperations() {
         btnADD = new javax.swing.JButton();
         btnSUB = new javax.swing.JButton();
         btnMUL = new javax.swing.JButton();
@@ -20,69 +40,124 @@ public class gui_matrices extends javax.swing.JFrame implements Serializable{
         matrix_1 = new javax.swing.JTextArea();
         matrix_2 = new javax.swing.JTextArea();
 
-        java.awt.Font fontStyle = new java.awt.Font("Monospaced", 0, 24);
+        matrix_solve_scroll = new javax.swing.JScrollPane();
+        matrix_1_scroll = new javax.swing.JScrollPane();
+        matrix_2_scroll = new javax.swing.JScrollPane();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        getContentPane().setLayout(null);
-        setResizable(false);
+        basic_op_panel = new javax.swing.JPanel();
+        basic_op_text = new java.awt.Label();
 
-        getContentPane().add(btnADD);
-        btnADD.setBounds(130, 230, 50, 50);
+        basic_op_panel.setLayout(null);
+
+        basic_op_panel.add(btnADD);
+        btnADD.setBounds(120, 270, 50, 50);
         btnADD.setText("+");
 
-        btnADD.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnPerformed(evt);
-            }
+        btnADD.addActionListener((java.awt.event.ActionEvent evt) -> {
+            basicOpPerform(evt);
         });
 
-        getContentPane().add(btnSUB);
-        btnSUB.setBounds(190, 230, 50, 50);
+        basic_op_panel.add(btnSUB);
+        btnSUB.setBounds(180, 270, 50, 50);
         btnSUB.setText("-");
 
-        btnSUB.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnPerformed(evt);
-            }
+        btnSUB.addActionListener((java.awt.event.ActionEvent evt) -> {
+            basicOpPerform(evt);
         });
 
-        getContentPane().add(btnMUL);
-        btnMUL.setBounds(250, 230, 50, 50);
+        basic_op_panel.add(btnMUL);
+        btnMUL.setBounds(240, 270, 50, 50);
         btnMUL.setText("*");
 
-        btnMUL.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnPerformed(evt);
-            }
+        btnMUL.addActionListener((java.awt.event.ActionEvent evt) -> {
+            basicOpPerform(evt);
         });
 
-        getContentPane().add(btnDIV);
-        btnDIV.setBounds(310, 230, 50, 50);
+        basic_op_panel.add(btnDIV);
+        btnDIV.setBounds(300, 270, 50, 50);
         btnDIV.setText("/");
 
-        btnDIV.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnPerformed(evt);
+        btnDIV.addActionListener((java.awt.event.ActionEvent evt) -> {
+            basicOpPerform(evt);
+        });
+
+        basic_op_panel.add(matrix_solve);
+        matrix_solve.setEditable(false);
+        matrix_solve.setFont(fontStyle);
+            
+        basic_op_panel.add(matrix_solve_scroll);
+        matrix_solve_scroll.setViewportView(matrix_solve);
+        matrix_solve_scroll.setBounds(520, 60, 210, 200);
+
+        basic_op_panel.add(matrix_1);
+        matrix_1.setFont(fontStyle);
+
+        basic_op_panel.add(matrix_1_scroll);
+        matrix_1_scroll.setViewportView(matrix_1);
+        matrix_1_scroll.setBounds(10, 60, 210, 200);
+
+        basic_op_panel.add(matrix_2);
+        matrix_2.setFont(fontStyle);
+
+        basic_op_panel.add(matrix_2_scroll);
+        matrix_2_scroll.setViewportView(matrix_2);
+        matrix_2_scroll.setBounds(250, 60, 210, 200);
+
+        basic_op_panel.add(basic_op_text);
+        basic_op_text.setText("BASIC OPERATIONS");
+        basic_op_text.setFont(new java.awt.Font(font_face, 1, 24));
+        basic_op_text.setBounds(10, 10, 730, 40);
+        
+    }
+
+    private void determinants() {
+        deter_panel = new javax.swing.JPanel();
+        
+        deter_solve = new javax.swing.JTextArea();
+        deter_input = new javax.swing.JTextArea();
+        
+        deter_solve_scroll = new javax.swing.JScrollPane();
+        deter_input_scroll = new javax.swing.JScrollPane();
+
+        deter_text = new java.awt.Label();
+
+        deter_panel.setLayout(null);
+
+        deter_panel.add(deter_solve);
+        deter_solve.setEditable(false);
+        deter_solve.setFont(fontStyle);
+
+        deter_panel.add(deter_solve_scroll);
+        deter_solve_scroll.setViewportView(deter_solve);
+        deter_solve_scroll.setBounds(520, 20, 210, 200);
+
+        deter_panel.add(deter_input);
+        deter_input.setFont(fontStyle);
+
+        deter_panel.add(deter_input_scroll);
+        deter_input_scroll.setViewportView(deter_input);
+        deter_input_scroll.setBounds(300, 20, 210, 200);
+
+        deter_input.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+
+                if (evt.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+                    deter_solve.setText("");
+                } else {
+                    deterPerform(evt);
+                }
+                
             }
         });
 
-        getContentPane().add(matrix_solve);
-        matrix_solve.setBounds(540, 20, 210, 200);
-        matrix_solve.setEditable(false);
-        matrix_solve.setFont(fontStyle);
+        deter_panel.add(deter_text);
+        deter_text.setText("DETERMINANTS");
+        deter_text.setBounds(10, 10, 300, 40);
+        deter_text.setFont(new java.awt.Font(font_face, 1, 24));
 
-        getContentPane().add(matrix_1);
-        matrix_1.setBounds(20, 20, 210, 200);
-        matrix_1.setFont(fontStyle);
-        
-        getContentPane().add(matrix_2);
-        matrix_2.setBounds(260, 20, 210, 200);
-        matrix_2.setFont(fontStyle);
-
-        setBounds(0, 0, 782, 330);
     }
 
-    private void btnPerformed(java.awt.event.ActionEvent evt) {
+    private void basicOpPerform(java.awt.event.ActionEvent evt) {
         int[][] mat1 = toArray(matrix_1);
         int[][] mat2 = toArray(matrix_2);
 
@@ -91,19 +166,19 @@ public class gui_matrices extends javax.swing.JFrame implements Serializable{
 
         switch(evt.getActionCommand()) {
             case "+":
-                valid = operations.is_add_sub_valid(mat1, mat2);
+                valid = operations.isAddSubValid(mat1, mat2);
                 if (valid) solve = operations.add(mat1, mat2);
                 break;
             case "-":
-                valid = operations.is_add_sub_valid(mat1, mat2);
+                valid = operations.isAddSubValid(mat1, mat2);
                 if (valid) solve = operations.subtract(mat1, mat2);
                 break;
             case "*":
-                valid = operations.is_mul_div_valid(mat1, mat2);
-                if (valid) solve = operations.subtract(mat1, mat2);
+                valid = operations.isMulDivValid(mat1, mat2);
+                if (valid) solve = operations.multiply(mat1, mat2);
                 break;
             case "/":
-                valid = operations.is_mul_div_valid(mat1, mat2);
+                valid = operations.isMulDivValid(mat1, mat2);
                 // if (valid) solve = operations.subtract(mat1, mat2);
                 break;
         }
@@ -111,6 +186,18 @@ public class gui_matrices extends javax.swing.JFrame implements Serializable{
         matrix_solve.setText((valid) ? toString(solve) : "Error!");
         matrix_1.setText("");
         matrix_2.setText("");
+
+    }
+
+    private void deterPerform(java.awt.event.KeyEvent evt) {
+
+        int[][] matrix = toArray(deter_input);
+
+        if (matrix.length > 1 && matrix[0].length > 1 && operations.isDeterminant(matrix)) {
+            deter_solve.setText(operations.determinant(matrix) + "");
+        } else {
+            deter_solve.setText("Error!");
+        }
 
     }
 
@@ -161,7 +248,6 @@ public class gui_matrices extends javax.swing.JFrame implements Serializable{
                     solve[row][col] = arr.get(row).get(col);
 
                 } catch (IndexOutOfBoundsException e) {
-                    System.out.println(e);
                     return new int[0][0];
                 }
             }
@@ -194,25 +280,23 @@ public class gui_matrices extends javax.swing.JFrame implements Serializable{
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(gui_matrices.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(gui_matrices.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(gui_matrices.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(gui_matrices.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
 
         java.awt.EventQueue.invokeLater(new Runnable() {
-            @Override
             public void run() {
                 new gui_matrices().setVisible(true);
             }
         });
         
     }
-
+    
+    // Variable declaration
+    private javax.swing.JTabbedPane tabbed_pane;
+    private String font_face = "Monospaced";
+    private java.awt.Font fontStyle = new java.awt.Font(font_face, 0, 12);
+    
     private javax.swing.JButton btnADD;
     private javax.swing.JButton btnSUB;
     private javax.swing.JButton btnMUL;
@@ -222,5 +306,22 @@ public class gui_matrices extends javax.swing.JFrame implements Serializable{
     private javax.swing.JTextArea matrix_1;
     private javax.swing.JTextArea matrix_2;
 
+    private javax.swing.JScrollPane matrix_solve_scroll;
+    private javax.swing.JScrollPane matrix_1_scroll;
+    private javax.swing.JScrollPane matrix_2_scroll;
+
+    private javax.swing.JPanel basic_op_panel;
+    private java.awt.Label basic_op_text;
+
+    private javax.swing.JTextArea deter_solve;
+    private javax.swing.JTextArea deter_input;
+
+    private javax.swing.JScrollPane deter_solve_scroll;
+    private javax.swing.JScrollPane deter_input_scroll;
+
+    private javax.swing.JPanel deter_panel;
+    private java.awt.Label deter_text;
+
     public static matrices operations = new matrices();
+    // End of variable declaration
 }
