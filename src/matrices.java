@@ -1,5 +1,6 @@
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.text.DecimalFormat;
 
 class matrices implements Serializable{
     
@@ -95,22 +96,25 @@ class matrices implements Serializable{
         }
     }
 
-    public int[][] getCofactor(int[][] mat) {
-        int cofactor = -1; // -1 * -1 = positive, a cofactor alternates between positives and negatives.
+    public int[][] getTranspose(int[][] mat) {
+        // Transposing a matrix simply means to make the columns of the original matrix the rows in the transposed matrix.
+        // A 2x3, when transposed, turns into a 3x2. A 1x5, when transposed, turns into a 5x1.
+        int[][] solve = new int[mat[0].length][mat.length];
 
         for (int row = 0; row < mat.length; row++) {
-
             for (int col = 0; col < mat[0].length; col++) {
-                cofactor = cofactor * -1;
-                mat[row][col] = mat[row][col] * cofactor; 
+                solve[col][row] = mat[row][col];
+
             }
 
         }
-        return mat;
+
+        return solve;
     }
 
     public int[][] getDeterminantOfMinors(int[][] mat) {
         // Matrix of Minors. Read more here https://en.wikipedia.org/wiki/Minor_(linear_algebra)
+        mat = getTranspose(mat);
         int[][] matrix;
         int[][] solve = new int[mat.length][mat[0].length];
 
@@ -122,6 +126,43 @@ class matrices implements Serializable{
             }            
         }
 
+        return solve;
+    }
+
+    public int[][] getAdjoint(int[][] mat) {
+        // Convert the matrix into a checkerboard pattern of positives (+) and negatives (-)
+        // do not suggest that the final term should be positive or negative.
+        int[][] adj = getDeterminantOfMinors(mat);
+        int i = 1;
+
+        for (int row = 0; row < mat.length; row++) {
+            for(int col = 0; col < mat[0].length; col++) {
+                adj[row][col] *= i;
+                i *= -1;
+
+            }
+
+        }
+
+        return adj;
+    }
+
+    public String[][] getInverse(int[][] mat) {
+
+        DecimalFormat df = new DecimalFormat("#.00");
+        double det = getDeterminant(mat);
+        int[][] matrix = getAdjoint(mat);
+        String[][] solve = new String[mat.length][mat.length];
+
+
+        for (int row = 0; row < mat.length; row++) {
+            for (int col = 0; col < mat[0].length; col++) {
+                double str = matrix[row][col] / det;
+                solve[row][col] = df.format(str);
+
+            }
+        }
+        
         return solve;
     }
 
@@ -154,13 +195,13 @@ class matrices implements Serializable{
         return matrix;
     }
 
-    public Boolean isAddSubValid(int[][] mat1, int[][] mat2) {
+    public boolean isAddSubValid(int[][] mat1, int[][] mat2) {
         // Rows and Columns of the first matrix must be equal to the second matrix's rows and columns.
         // row_of_mat1 == row_of_mat2 and col_of_mat1 == col_of_mat2;
         return mat1.length == mat2.length && mat1[0].length == mat2[0].length;
     }
 
-    public Boolean isMulDivValid(int[][] mat1, int[][] mat2) {
+    public boolean isMulDivValid(int[][] mat1, int[][] mat2) {
         // The number of columns of the first matrix must equal the number of rows of the second matrix.
         // col_of_mat1 == row_of_mat2
         return mat1[0].length == mat2.length;
@@ -200,17 +241,34 @@ class matrices implements Serializable{
         return solve;
     }
 
-    public void print(int[][] mat) {
+    public String print(int[][] mat) {
+        String solve = "";
 
         for (int[] row: mat) {
-            
             for (int col: row) {
-                System.out.print(col + " ");
+                solve += col + " ";
+
             }
+            solve += "\n";
 
-            System.out.println();
         }
+        
+        return solve;
+    }
 
+    public String print(String[][] mat) {
+        String solve = "";
+
+        for (String[] row: mat) {
+            for (String col: row) {
+                solve += col + " ";
+
+            } 
+            solve += "\n";
+
+        }
+        
+        return solve;
     }
 
 }
