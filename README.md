@@ -22,12 +22,13 @@ In mathematics, a matrix (plural matrices) is a collection of integers, symbols,
 <ol>
   <li>Goto build-jar folder</li>
   <li>Download Basic Matrix Calculator</li>
-  <li>Run program</li>
+  <li>Run the program</li>
 </ol>
 
 # How to use
 <ol>
-  <li>In the Textareas, Each column must be separated by a space, and each row is separated by creating a new line or pressing enter on your keyboard</li>
+  <li>In the Textareas, each column must be separated by a space, and each row is separated by creating a new line or pressing enter on your keyboard.</li>
+  <li>Other than Basic Operations, other features are automated to show the solved matrix when rules are satisfied</li>
 </ol>
 
 # Features
@@ -69,4 +70,4 @@ The Matrix Calculator (as of now) features the ability to perform basic operatio
 </table>
 
 # Matrix Division
-In Matrices, there's no such thing as Division. You can only add, subtract, and multiply, but never divide. Although there is a concept called "inversion" that can provide a similar output. It involves a similar process to getting the "reciprocal" of a number. The Matrix Calculator features Determinants of a Matrix, Transposing, Determinants of Minors, Adjoint, and Inverse of Matrix, that collectively help in Dividing Matrices. Dividing matrices involves finding the Inverse of a Matrix, then multiplying it with the another matrix.
+In Matrices, there's no such thing as Division. You can only add, subtract, and multiply, but never divide. Although, there is a concept called "inversion" that can provide a similar output. It involves a similar process to getting the "reciprocal" of a number. The Matrix Calculator features Determinants of a Matrix, Transposing, Determinants of Minors, Adjoint, and Inverse of Matrix, which helps in Dividing Matrices. Dividing matrices involves finding the Inverse of a Matrix, then multiplying it with another matrix.
