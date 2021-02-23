@@ -24,7 +24,12 @@ In mathematics, a matrix (plural matrices) is a collection of integers, symbols,
   <li>Download Basic Matrix Calculator</li>
   <li>Run program</li>
 </ol>
-  
+
+# How to use
+<ol>
+  <li>In the Textareas, Each column must be separated by a space, and each row is separated by creating a new line or pressing enter on your keyboard</li>
+</ol>
+
 # Features
 <ul>
   <li>Add and Subtract two Matrices</li>
